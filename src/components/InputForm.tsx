@@ -1,4 +1,3 @@
-// components/InputForm.tsx
 import { Github, FolderTree, Copy, Download, Trash2 } from 'lucide-react';
 
 interface InputFormProps {
@@ -33,7 +32,7 @@ export default function InputForm({
           placeholder="Enter GitHub repository URL (e.g., https://github.com/owner/repo)"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          className="w-full pl-12 pr-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition text-gray-100 placeholder-gray-500"
+          className="w-full pl-12 pr-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl focus:ring-0 focus:outline-none focus:border-transparent transition text-gray-100 placeholder-gray-500"
           required
         />
       </div>
@@ -41,7 +40,7 @@ export default function InputForm({
         <button
           type="submit"
           disabled={loading}
-          className="flex-1 py-3 px-6 bg-blue-600 hover:bg-blue-700 rounded-xl font-medium transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-500/20"
+          className="flex-1 text-sm sm:text-base px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-medium transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-blue-500/20 cursor-pointer"
         >
           {loading ? (
             <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -57,7 +56,7 @@ export default function InputForm({
             type="button"
             onClick={onCopy}
             disabled={!tree}
-            className="px-4 py-3 bg-slate-700 hover:bg-slate-600 rounded-xl font-medium transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full sm:w-auto text-xs sm:text-sm px-2 sm:px-4 py-2 sm:py-3 bg-slate-700 hover:bg-slate-600 rounded-xl font-medium transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             <Copy className="w-4 h-4" />
             Copy
@@ -66,7 +65,7 @@ export default function InputForm({
             type="button"
             onClick={onDownload}
             disabled={!tree}
-            className="px-4 py-3 bg-slate-700 hover:bg-slate-600 rounded-xl font-medium transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full sm:w-auto text-xs sm:text-sm px-2 sm:px-4 py-2 sm:py-3 bg-slate-700 hover:bg-slate-600 rounded-xl font-medium transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             <Download className="w-4 h-4" />
             Save
@@ -75,7 +74,7 @@ export default function InputForm({
             type="button"
             onClick={onClear}
             disabled={!url && !tree}
-            className="px-4 py-3 bg-slate-700 hover:bg-slate-600 rounded-xl font-medium transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full sm:w-auto text-xs sm:text-sm px-2 sm:px-4 py-2 sm:py-3 bg-slate-700 hover:bg-slate-600 rounded-xl font-medium transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
           >
             <Trash2 className="w-4 h-4" />
             Clear

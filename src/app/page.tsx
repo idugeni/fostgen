@@ -98,7 +98,7 @@ export default function FolderStructureGenerator() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-black text-gray-100">
-      <div className="container mx-auto px-4 py-12">
+      <div className="mx-auto px-4 py-12">
         <Header />
         <div className="max-w-4xl mx-auto">
           <div className="bg-slate-900/70 backdrop-blur-md rounded-2xl p-8 shadow-2xl border border-slate-800">
