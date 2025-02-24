@@ -15,18 +15,36 @@
 
 - [Introduction](#introduction)
 - [Features](#features)
+- [Visual Preview](visual-preview)
+- [Project Structure](#project-structure)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
 
+## Introduction
+
+Folder Structure Generator is a tool that allows users to generate elegant folder structure visualizations from any GitHub repository.
+
+## Features
+
+- Fetches and displays folder structure from public GitHub repositories.
+- Provides a clean markdown output.
+- Copy or download the generated folder structure.
+- User-friendly UI with Tailwind CSS.
+
+## Visual Preview
+
+![AstraLumen Screenshot](/public/fostgen.png)
+
 ## Project Structure
 
 ```bash
-fostgen
+fostgen/
 ├─ public
 │  ├─ favicon.png
 │  ├─ file.svg
+│  ├─ fostgen.png
 │  ├─ globe.svg
 │  ├─ next.svg
 │  ├─ vercel.svg
@@ -55,17 +73,6 @@ fostgen
 ├─ tsconfig.json
 └─ turbo.json
 ```
-
-## Introduction
-
-Folder Structure Generator is a tool that allows users to generate elegant folder structure visualizations from any GitHub repository.
-
-## Features
-
-- Fetches and displays folder structure from public GitHub repositories.
-- Provides a clean markdown output.
-- Copy or download the generated folder structure.
-- User-friendly UI with Tailwind CSS.
 
 ## Installation
 
