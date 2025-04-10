@@ -1,4 +1,8 @@
-// components/Header.tsx
+/**
+ * @component Header
+ * @description Komponen header utama yang menampilkan judul dan deskripsi aplikasi FostGen
+ * @returns {JSX.Element} Komponen header dengan logo, judul, dan deskripsi
+ */
 import { FolderTree } from 'lucide-react';
 
 export default function Header() {

@@ -1,5 +1,17 @@
 import { Github, FolderTree, Copy, Download, Trash2 } from 'lucide-react';
 
+/**
+ * @interface InputFormProps
+ * @description Props yang dibutuhkan untuk komponen InputForm
+ * @property {string} url - URL repository GitHub yang akan diproses
+ * @property {function} setUrl - Fungsi untuk mengubah nilai URL
+ * @property {boolean} loading - Status loading saat memproses request
+ * @property {string} tree - String hasil generate struktur folder
+ * @property {function} onSubmit - Handler untuk submit form
+ * @property {function} onCopy - Handler untuk menyalin hasil ke clipboard
+ * @property {function} onDownload - Handler untuk mengunduh hasil
+ * @property {function} onClear - Handler untuk membersihkan form
+ */
 interface InputFormProps {
   url: string;
   setUrl: (value: string) => void;
@@ -11,6 +23,12 @@ interface InputFormProps {
   onClear: () => void;
 }
 
+/**
+ * @component InputForm
+ * @description Komponen form untuk memasukkan URL GitHub repository dan menampilkan tombol aksi
+ * @param {InputFormProps} props - Props yang dibutuhkan oleh komponen
+ * @returns {JSX.Element} Form input dengan tombol-tombol aksi
+ */
 export default function InputForm({
   url,
   setUrl,
@@ -51,35 +69,34 @@ export default function InputForm({
             </>
           )}
         </button>
-        <div className="flex gap-3">
-          <button
-            type="button"
-            onClick={onCopy}
-            disabled={!tree}
-            className="w-full sm:w-auto text-xs sm:text-sm px-2 sm:px-4 py-2 sm:py-3 bg-slate-700 hover:bg-slate-600 rounded-xl font-medium transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-          >
-            <Copy className="w-4 h-4" />
-            Copy
-          </button>
-          <button
-            type="button"
-            onClick={onDownload}
-            disabled={!tree}
-            className="w-full sm:w-auto text-xs sm:text-sm px-2 sm:px-4 py-2 sm:py-3 bg-slate-700 hover:bg-slate-600 rounded-xl font-medium transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-          >
-            <Download className="w-4 h-4" />
-            Save
-          </button>
-          <button
-            type="button"
-            onClick={onClear}
-            disabled={!url && !tree}
-            className="w-full sm:w-auto text-xs sm:text-sm px-2 sm:px-4 py-2 sm:py-3 bg-slate-700 hover:bg-slate-600 rounded-xl font-medium transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-          >
-            <Trash2 className="w-4 h-4" />
-            Clear
-          </button>
-        </div>
+        {tree && (
+          <div className="flex gap-4">
+            <button
+              type="button"
+              onClick={onCopy}
+              className="px-4 sm:px-6 py-2 sm:py-3 bg-slate-700 hover:bg-slate-600 rounded-xl font-medium transition flex items-center gap-2"
+            >
+              <Copy className="w-5 h-5" />
+              Copy
+            </button>
+            <button
+              type="button"
+              onClick={onDownload}
+              className="px-4 sm:px-6 py-2 sm:py-3 bg-slate-700 hover:bg-slate-600 rounded-xl font-medium transition flex items-center gap-2"
+            >
+              <Download className="w-5 h-5" />
+              Download
+            </button>
+            <button
+              type="button"
+              onClick={onClear}
+              className="px-4 sm:px-6 py-2 sm:py-3 bg-slate-700 hover:bg-slate-600 rounded-xl font-medium transition flex items-center gap-2"
+            >
+              <Trash2 className="w-5 h-5" />
+              Clear
+            </button>
+          </div>
+        )}
       </div>
     </form>
   );

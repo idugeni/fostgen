@@ -7,6 +7,11 @@ import Notification from '@/components/Notification';
 import OutputDisplay from '@/components/OutputDisplay';
 import { extractOwnerRepo, getDefaultBranch, getTree, buildMarkdownTree } from '@/utils/githubApi';
 
+/**
+ * Main component for generating and displaying folder structures from GitHub repositories
+ * @component
+ * @returns {JSX.Element} The folder structure generator component
+ */
 export default function FolderStructureGenerator() {
   const [url, setUrl] = useState<string>('');
   const [tree, setTree] = useState<string>('');
@@ -17,11 +22,21 @@ export default function FolderStructureGenerator() {
     type: 'success' | 'info' | 'error';
   } | null>(null);
 
+  /**
+   * Shows a notification message with specified type
+   * @param {string} message - The message to display
+   * @param {'success' | 'info' | 'error'} type - The type of notification
+   */
   const showNotification = (message: string, type: 'success' | 'info' | 'error'): void => {
     setNotification({ message, type });
     setTimeout(() => setNotification(null), 3000);
   };
 
+  /**
+   * Handles form submission to generate folder structure
+   * @param {React.FormEvent<HTMLFormElement>} e - Form event
+   * @returns {Promise<void>}
+   */
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     setLoading(true);
@@ -53,6 +68,9 @@ export default function FolderStructureGenerator() {
     }
   };
 
+  /**
+   * Clears all form inputs and results
+   */
   const handleClear = (): void => {
     setUrl('');
     setTree('');
@@ -60,6 +78,10 @@ export default function FolderStructureGenerator() {
     showNotification('Cleared successfully!', 'success');
   };
 
+  /**
+   * Copies the generated tree structure to clipboard
+   * @returns {Promise<void>}
+   */
   const handleCopy = async (): Promise<void> => {
     try {
       await navigator.clipboard.writeText(tree);
@@ -73,6 +95,9 @@ export default function FolderStructureGenerator() {
     }
   };
 
+  /**
+   * Downloads the generated tree structure as a markdown file
+   */
   const handleDownload = (): void => {
     try {
       const { repo } = extractOwnerRepo(url);
