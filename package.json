@@ -17,7 +17,14 @@
     "url": "https://github.com/idugeni/fostgen/issues",
     "email": "support@oldsoul.id"
   },
-  "keywords": ["next.js", "react", "typescript", "template", "generator", "development"],
+  "keywords": [
+    "next.js",
+    "react",
+    "typescript",
+    "template",
+    "generator",
+    "development"
+  ],
   "license": "MIT",
   "scripts": {
     "dev": "next dev --turbopack --experimental-https",
@@ -31,7 +38,7 @@
   },
   "dependencies": {
     "lucide-react": "^0.487.0",
-    "next": "15.3.0",
+    "next": "15.3.8",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
