@@ -1,8 +1,8 @@
 {
   "name": "fostgen",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "private": true,
-  "description": "A modern Next.js application for generating and managing code templates",
+  "description": "Generate elegant folder structure visualizations from any GitHub repository",
   "author": {
     "name": "Fostgen Team",
     "email": "team@oldsoul.id",
@@ -11,7 +11,7 @@
   "homepage": "https://oldsoul.id",
   "repository": {
     "type": "git",
-    "url": "https://github.com/idugeni/fostgen.git"
+    "url": "git+https://github.com/idugeni/fostgen.git"
   },
   "bugs": {
     "url": "https://github.com/idugeni/fostgen/issues",
@@ -21,48 +21,51 @@
     "next.js",
     "react",
     "typescript",
-    "template",
+    "github",
+    "folder-structure",
+    "tree",
     "generator",
-    "development"
+    "markdown"
   ],
   "license": "MIT",
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "scripts": {
-    "dev": "next dev --turbopack --experimental-https",
-    "build": "next build --turbopack",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "check-types": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "verify": "npm run lint && npm run typecheck && npm run test"
   },
   "dependencies": {
-    "lucide-react": "^0.487.0",
-    "next": "15.3.8",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.28.0",
+    "next": "^16.2.12",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "tailwind-merge": "^3.6.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4.1.3",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.3.0",
-    "@types/express": "^5.0.1",
-    "@types/jest": "^29.5.14",
-    "@types/node": "^22",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "babel-jest": "^29.7.0",
-    "eslint": "^9",
-    "eslint-config-next": "15.3.0",
-    "identity-obj-proxy": "^3.0.0",
-    "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0",
-    "postcss": "^8",
-    "tailwindcss": "^4.1.3",
-    "turbo": "^2.5.0",
-    "typescript": "^5",
-    "winston": "^3.17.0"
-  },
-  "packageManager": "npm@11.3.0"
+    "@tailwindcss/postcss": "^4.3.3",
+    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^22.19.1",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.2.12",
+    "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.4.1",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.3"
+  }
 }

@@ -1,152 +1,82 @@
-'use client';
+import { FileCode2, Filter, KeyRound, Zap } from 'lucide-react';
 
-import { useState, useEffect } from 'react';
-import Header from '@/components/Header';
-import InputForm from '@/components/InputForm';
-import Notification from '@/components/Notification';
-import OutputDisplay from '@/components/OutputDisplay';
-import { extractOwnerRepo, getDefaultBranch, getTree, buildMarkdownTree } from '@/utils/githubApi';
+import { StructureGenerator } from '@/components/generator/StructureGenerator';
+import { Footer } from '@/components/layout/Footer';
+import { Header } from '@/components/layout/Header';
+import { getSiteUrl, siteConfig } from '@/lib/config';
 
-/**
- * Main component for generating and displaying folder structures from GitHub repositories
- * @component
- * @returns {JSX.Element} The folder structure generator component
- */
-export default function FolderStructureGenerator() {
-  const [url, setUrl] = useState<string>('');
-  const [tree, setTree] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
-  const [notification, setNotification] = useState<{
-    message: string;
-    type: 'success' | 'info' | 'error';
-  } | null>(null);
+const FEATURES = [
+  {
+    icon: FileCode2,
+    title: 'Five output formats',
+    body: 'ASCII tree, Markdown list, JSON, YAML or a flat path list — switch without refetching.',
+  },
+  {
+    icon: Filter,
+    title: 'Precise filtering',
+    body: 'Depth limits plus gitignore-style patterns, including negation to re-include a path.',
+  },
+  {
+    icon: Zap,
+    title: 'Cached on the server',
+    body: 'Repository lookups are resolved server-side and cached, so repeat requests are instant.',
+  },
+  {
+    icon: KeyRound,
+    title: 'Token-aware',
+    body: 'An optional GITHUB_TOKEN lifts the rate limit to 5,000 requests per hour and never reaches the browser.',
+  },
+] as const;
 
-  /**
-   * Shows a notification message with specified type
-   * @param {string} message - The message to display
-   * @param {'success' | 'info' | 'error'} type - The type of notification
-   */
-  const showNotification = (message: string, type: 'success' | 'info' | 'error'): void => {
-    setNotification({ message, type });
-    setTimeout(() => setNotification(null), 3000);
-  };
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: siteConfig.name,
+  alternateName: siteConfig.tagline,
+  description: siteConfig.description,
+  url: getSiteUrl(),
+  applicationCategory: 'DeveloperApplication',
+  operatingSystem: 'Any',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+};
 
-  /**
-   * Handles form submission to generate folder structure
-   * @param {React.FormEvent<HTMLFormElement>} e - Form event
-   * @returns {Promise<void>}
-   */
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    setTree('');
-
-    try {
-      const { owner, repo } = extractOwnerRepo(url);
-      const branchName = await getDefaultBranch(owner, repo);
-      if (!branchName) {
-        throw new Error('Could not determine default branch');
-      }
-      const treeData = await getTree(owner, repo, branchName);
-      if (!treeData || treeData.length === 0) {
-        throw new Error('Repository appears to be empty');
-      }
-      const markdown = `# ${repo}\n\n${buildMarkdownTree(treeData)}`;
-      setTree(markdown);
-      showNotification('Structure generated successfully!', 'success');
-    } catch (err: unknown) {
-      let errorMessage = 'An unexpected error occurred';
-      if (err instanceof Error) {
-        errorMessage = err.message;
-      }
-      setError(errorMessage);
-      showNotification(errorMessage, 'error');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  /**
-   * Clears all form inputs and results
-   */
-  const handleClear = (): void => {
-    setUrl('');
-    setTree('');
-    setError('');
-    showNotification('Cleared successfully!', 'success');
-  };
-
-  /**
-   * Copies the generated tree structure to clipboard
-   * @returns {Promise<void>}
-   */
-  const handleCopy = async (): Promise<void> => {
-    try {
-      await navigator.clipboard.writeText(tree);
-      showNotification('Copied to clipboard!', 'info');
-    } catch (err: unknown) {
-      let errorMessage = 'Failed to copy to clipboard';
-      if (err instanceof Error) {
-        errorMessage = err.message;
-      }
-      showNotification(errorMessage, 'error');
-    }
-  };
-
-  /**
-   * Downloads the generated tree structure as a markdown file
-   */
-  const handleDownload = (): void => {
-    try {
-      const { repo } = extractOwnerRepo(url);
-      const blob = new Blob([tree], { type: 'text/markdown' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `${repo}-structure.md`;
-      a.click();
-      URL.revokeObjectURL(a.href);
-      showNotification('Download started!', 'success');
-    } catch (err: unknown) {
-      let errorMessage = 'Failed to download structure';
-      if (err instanceof Error) {
-        errorMessage = err.message;
-      }
-      showNotification(errorMessage, 'error');
-    }
-  };
-
-  useEffect(() => {
-    document.title = 'FostGen - Folder Structure Generator';
-  }, []);
-
+export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-black text-gray-100">
-      <div className="mx-auto px-4 py-12">
-        <Header />
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-slate-900/70 backdrop-blur-md rounded-2xl p-8 shadow-2xl border border-slate-800">
-            <InputForm
-              url={url}
-              setUrl={setUrl}
-              loading={loading}
-              tree={tree}
-              onSubmit={handleSubmit}
-              onCopy={handleCopy}
-              onDownload={handleDownload}
-              onClear={handleClear}
-            />
-            {notification && <Notification message={notification.message} type={notification.type} />}
-            {error && (
-              <div className="mt-4 p-2 bg-red-500 text-white rounded">
-                {error}
-              </div>
-            )}
-            <OutputDisplay tree={tree} />
-          </div>
-        </div>
-      </div>
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        // Static, author-controlled JSON-LD; no user input is interpolated.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+      <Header />
+
+      <main className="mx-auto w-full max-w-6xl px-4 pt-10 pb-4 sm:px-6 sm:pt-14">
+        <section className="mx-auto mb-10 max-w-2xl text-center">
+          <h1 className="text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+            Folder structures from any GitHub repository
+          </h1>
+          <p className="mt-3 text-base text-ink-muted">{siteConfig.description}</p>
+        </section>
+
+        <StructureGenerator />
+
+        <section aria-labelledby="features-heading" className="mt-16">
+          <h2 id="features-heading" className="sr-only">
+            Features
+          </h2>
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {FEATURES.map(({ icon: Icon, title, body }) => (
+              <li key={title} className="rounded-2xl border border-line bg-surface p-5">
+                <Icon aria-hidden className="size-5 text-brand" />
+                <h3 className="mt-3 text-sm font-semibold text-ink">{title}</h3>
+                <p className="mt-1.5 text-xs leading-relaxed text-ink-muted">{body}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </main>
+
+      <Footer />
+    </>
   );
 }
