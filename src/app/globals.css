@@ -1,42 +1,147 @@
 @import 'tailwindcss';
 
-@theme {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-}
-
 /*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
+  Theme is driven by `data-theme` on <html> so it can be set by an inline script
+  before first paint (no flash) and toggled without a re-render of the tree.
 */
-@layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
-  }
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-elevated: var(--elevated);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-subtle: var(--ink-subtle);
+
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-soft: var(--brand-soft);
+
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --canvas: oklch(98.4% 0.003 250);
+  --surface: oklch(100% 0 0);
+  --elevated: oklch(96.8% 0.005 250);
+  --line: oklch(91% 0.008 250);
+  --line-strong: oklch(84% 0.012 250);
+
+  --ink: oklch(21% 0.02 255);
+  --ink-muted: oklch(46% 0.018 255);
+  --ink-subtle: oklch(62% 0.015 255);
+
+  --brand: oklch(55% 0.19 258);
+  --brand-hover: oklch(49% 0.19 258);
+  --brand-ink: oklch(100% 0 0);
+  --brand-soft: oklch(95% 0.03 258);
+
+  --success: oklch(52% 0.14 152);
+  --success-soft: oklch(95% 0.04 152);
+  --warning: oklch(58% 0.13 75);
+  --warning-soft: oklch(96% 0.05 85);
+  --danger: oklch(53% 0.19 25);
+  --danger-soft: oklch(95% 0.04 25);
+
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+[data-theme='dark'] {
+  --canvas: oklch(17% 0.014 258);
+  --surface: oklch(21% 0.016 258);
+  --elevated: oklch(25% 0.018 258);
+  --line: oklch(30% 0.018 258);
+  --line-strong: oklch(38% 0.02 258);
+
+  --ink: oklch(96% 0.005 258);
+  --ink-muted: oklch(74% 0.012 258);
+  --ink-subtle: oklch(58% 0.014 258);
+
+  --brand: oklch(66% 0.16 258);
+  --brand-hover: oklch(72% 0.16 258);
+  --brand-ink: oklch(16% 0.02 258);
+  --brand-soft: oklch(28% 0.06 258);
+
+  --success: oklch(75% 0.15 155);
+  --success-soft: oklch(27% 0.06 155);
+  --warning: oklch(80% 0.14 85);
+  --warning-soft: oklch(29% 0.06 80);
+  --danger: oklch(70% 0.17 25);
+  --danger-soft: oklch(28% 0.08 25);
+
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--color-brand);
+    color: var(--color-brand-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+  }
+
+  /* Firefox */
+  * {
+    scrollbar-color: var(--color-line-strong) transparent;
+    scrollbar-width: thin;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--color-line-strong);
+    border: 2px solid transparent;
+    background-clip: content-box;
+    border-radius: 9999px;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
